@@ -35,16 +35,17 @@ namespace RandomDungeon
             this.origin = origin;
             this.width = width;
             this.height = height;
-            this.diagonalEnding = Point.Add(origin, new Size(width-1, height-1));
+            this.diagonalEnding = Point.Add(origin, new Size(width - 1, height - 1));
             this.anchorPoint = new Point(origin.X + (width / 2) - 1, origin.Y + (height / 2) - 1);
         }
 
         //check if the given point is inside current room
         //return: true if Point is inside the room, false otherwise
-        public bool isPointInRoom(Point p) {
+        public bool isPointInRoom(Point p)
+        {
             //p.Offset(origin);
             p = Point.Subtract(p, new Size(origin.X, origin.Y));
-            return 0 < p.X && p.X < width-1 && p.Y > 0 && p.Y < height-1;
+            return 0 < p.X && p.X < width - 1 && p.Y > 0 && p.Y < height - 1;
         }
 
         //check if the given point is on the edge of current room
@@ -53,7 +54,7 @@ namespace RandomDungeon
         {
             //p.Offset(origin);
             p = Point.Subtract(p, new Size(origin.X, origin.Y));
-            return p.X==0||p.Y == 0 ;
+            return (p.X == 0 && p.Y > 0 && p.Y < height) || (p.Y == 0 && p.X > 0 && p.X < width);
         }
 
 
@@ -66,25 +67,26 @@ namespace RandomDungeon
         {
             //locate the 4 anchor points
             Point A = origin;
-            Point B = Point.Add(origin, new Size(width-1, 0));
-            Point C = Point.Add(origin, new Size(0, height-1));
+            Point B = Point.Add(origin, new Size(width - 1, 0));
+            Point C = Point.Add(origin, new Size(0, height - 1));
             Point D = diagonalEnding;
             //draw line AB
-            for(int x = A.X; x < B.X+1; x++){
-                bluePrint.storyboard[x,A.Y] = BluePrint.Dot.Horizontal;
+            for (int x = A.X; x < B.X + 1; x++)
+            {
+                bluePrint.storyboard[x, A.Y] = BluePrint.Dot.Horizontal;
             }
             //draw line CD
-            for (int x = C.X; x < D.X+1; x++)
+            for (int x = C.X; x < D.X + 1; x++)
             {
-                bluePrint.storyboard[x,C.Y] = BluePrint.Dot.Horizontal;
+                bluePrint.storyboard[x, C.Y] = BluePrint.Dot.Horizontal;
             }
             //draw line AC
-            for (int y = A.Y; y < C.Y+1; y++)
+            for (int y = A.Y; y < C.Y + 1; y++)
             {
                 bluePrint.storyboard[A.X, y] = BluePrint.Dot.Vertical;
             }
             //draw line BD
-            for (int y = B.Y; y < D.Y+1; y++)
+            for (int y = B.Y; y < D.Y + 1; y++)
             {
                 bluePrint.storyboard[B.X, y] = BluePrint.Dot.Vertical;
             }
