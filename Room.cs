@@ -14,17 +14,26 @@ namespace RandomDungeon
         public int height;
         private Point diagonalEnding;
 
-        public Room() {
+        //default constructor
+        //input: None
+        //return: a Room instance at (0,0) with width and height equaling 0
+        private Room() {
             origin = new Point(0, 0);
             width = 0;
             height = 0;
         }
 
+        //constructor with width and height given
+        //input: int width, int height
+        //return: a Room at (0,0) with given width and height
         public Room(int width, int height) :this(){
             this.width = width;
             this.height = height;
         }
 
+        //constructor with origin, width and height given
+        //input: Point origin, int width, int height
+        //return: a Room at given Origin with given width and height
         public Room(Point origin, int width, int height)
             : this(width, height)
         {
