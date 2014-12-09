@@ -69,7 +69,7 @@ namespace RandomDungeon
             var generator = new Random(seed);
             generateRooms(generator);
             generatePaths();
-            eraseInSquarePoint();
+            //eraseInSquarePoint();
         }
 
         //generate a number of rooms and try to fill up the room list
@@ -92,7 +92,7 @@ namespace RandomDungeon
                     //test if the testRoom is too close to some exsiting room
                     foreach (Room room in rooms)
                     {
-                        isTooClose = Math.Sqrt((room.anchorPoint.X - testRoom.anchorPoint.X) ^ 2 + (room.anchorPoint.Y - testRoom.anchorPoint.Y) ^ 2) < Math.Sqrt(width ^ 2 + height ^ 2) * 0.1;
+                        isTooClose = Math.Sqrt((room.anchorPoint.X - testRoom.anchorPoint.X) ^ 2 + (room.anchorPoint.Y - testRoom.anchorPoint.Y) ^ 2) < Math.Sqrt(width ^ 2 + height ^ 2) * 0.2;
                         if (isTooClose) { break; }
                     }
                     if (!isTooClose)
@@ -114,7 +114,7 @@ namespace RandomDungeon
             {
                 for (int j = i+1; j < rooms.Count; j++)
                 {
-                    var path = new Path(rooms[i].anchorPoint, rooms[j].anchorPoint);
+                    Path path = new Path(rooms[i].anchorPoint, rooms[j].anchorPoint);
                     paths.Add(path);
                     path.Draw(this);
                     Console.WriteLine("Drawing path:"+ ++drawingCounter+" start: "+path.start.ToString()+" end: "+path.end.ToString());

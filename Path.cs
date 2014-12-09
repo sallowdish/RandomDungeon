@@ -12,6 +12,7 @@ namespace RandomDungeon
     {
         public Point start;
         public Point end;
+        static private Random generator=null;
 
         //default constructor
         //return: a Path starting from (0,0) and ending at (0,0)
@@ -30,9 +31,9 @@ namespace RandomDungeon
             // swap point start with end if start is lower than end
             if (start.Y > end.Y)
             {
-                var p = start;
-                start = end;
-                end = p;
+                Point t = this.start;
+                this.start = this.end;
+                this.end = t;
             }
         }
 
@@ -51,28 +52,30 @@ namespace RandomDungeon
         //return void;
         public void Draw(BluePrint bluePrint)
         {
-            var generator = new Random(bluePrint.usedSeed);
+            if (generator == null) {generator = new Random(bluePrint.usedSeed); }
             int isVerticalFirst = generator.Next() % 2;
-            List<Point> pathTrail=new List<Point>(0);
+            List<Point> pathTrailVertical=new List<Point>(0);
+            List<Point> pathTrailHorizontal = new List<Point>(0);
             //caseA
             // A--------M(--------A)
             //          |
             //          B
             if (isVerticalFirst == 0)
             {
+                Console.WriteLine("Vertical first");
                 //locate the point M(bigger X, smaller Y)
                 Point M = new Point(end.X, start.Y);
                 //draw line BM
                 for (int y = M.Y; y < end.Y; y++)
                 {
-                    pathTrail.Add(new Point(M.X, y));
+                    pathTrailVertical.Add(new Point(M.X, y));
                 }
                 //A is on the right of M
                 if (M.X < start.X)
                 {
                     for (int x = M.X; x < start.X; x++)
                     {
-                        pathTrail.Add(new Point(x, M.Y));
+                        pathTrailHorizontal.Add(new Point(x, M.Y));
                     }
                 }
                 //A is on the left of M
@@ -80,7 +83,7 @@ namespace RandomDungeon
                 {
                     for (int x = start.X; x < M.X; x++)
                     {
-                        pathTrail.Add(new Point(x,M.Y));
+                        pathTrailHorizontal.Add(new Point(x, M.Y));
                     }
                 }
 
@@ -96,7 +99,7 @@ namespace RandomDungeon
                 //draw line AM
                 for (int y = start.Y; y < M.Y; y++)
                 {
-                    pathTrail.Add(new Point(M.X,y));
+                    pathTrailVertical.Add(new Point(M.X, y));
                     //bluePrint.storyboard[M.X, y] = BluePrint.Dot.Path;
                 }
                 //draw line BM
@@ -105,7 +108,7 @@ namespace RandomDungeon
                 {
                     for (int x = M.X; x < end.X; x++)
                     {
-                        pathTrail.Add(new Point(x,M.Y));
+                        pathTrailHorizontal.Add(new Point(x, M.Y));
                         //bluePrint.storyboard[x, M.Y] = BluePrint.Dot.Path;
                     }
                 }
@@ -114,13 +117,13 @@ namespace RandomDungeon
                 {
                     for (int x = end.X; x < M.X; x++)
                     {
-                        pathTrail.Add(new Point(x, M.Y));
+                        pathTrailHorizontal.Add(new Point(x, M.Y));
                         //bluePrint.storyboard[x, M.Y] = BluePrint.Dot.Path;
                     }
                 }
             }
             //check if p is not in/on any of exsiting room
-            foreach (Point p in pathTrail)
+            foreach (Point p in pathTrailVertical)
             {
 
                 //Debug
@@ -150,6 +153,9 @@ namespace RandomDungeon
                 //else {
                 
                 //}
+            }
+            foreach (Point p in pathTrailHorizontal) {
+                bluePrint.storyboard[p.X, p.Y] = BluePrint.Dot.Path;
             }
         }
     }
