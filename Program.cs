@@ -11,6 +11,7 @@ namespace RandomDungeon
 {
     class Program
     {
+        //help class for input validating
         class Options
         {
             [Option]
@@ -24,7 +25,7 @@ namespace RandomDungeon
 
             [Option('s', "seed", Required = false, DefaultValue=-1,
               HelpText = "Seed to reproduce specific dungeon.")]
-            public double seed { get; set; }
+            public int seed { get; set; }
 
             [Option('c', "count", DefaultValue = 5, 
               HelpText = "Number of rooms in the dungeon.")]
@@ -44,8 +45,9 @@ namespace RandomDungeon
                 return help;
             }
         }
+        
         static int maxWidth, maxHeight, numRooms;
-        static double seed=0;
+        static int seed=0;
         static void Main(string[] args)
         {
             //todo validate input
@@ -63,13 +65,15 @@ namespace RandomDungeon
                     Console.WriteLine(numRooms = options.count);
                     Console.WriteLine(seed=options.seed);
             }
-            //try
-            //{
-            //    //instantiate a dundeon
-            //    //print the dungeon
+            try
+            {
+                //instantiate a dundeon
+                var blueprint = new BluePrint(maxWidth,maxHeight,numRooms,seed);
+                var dungeon = new Dungeon();
+                //print the dungeon
 
-            //}
-            //catch { }
+            }
+            catch { }
 
             //try { }
             //catch { Console.WriteLine(seed); }
@@ -82,8 +86,8 @@ namespace RandomDungeon
             int maxWidth, maxHeight;
             if (!(int.TryParse(args[0], out maxWidth) && int.TryParse(args[1], out maxHeight))) { throw new IOException("Invalid Input: Incorrect maxWidth or maxHeight value"); }
             if (args.Length == 4 && args[2] != "-s") { throw new IOException("Invalid Input: Incorrect seed flag"); }
-            double seed;
-            if (args.Length == 4 && !(double.TryParse(args[3], out seed))) { throw new IOException("Invalid Input: Incorrect seed value"); }
+            int seed;
+            if (args.Length == 4 && !(int.TryParse(args[3], out seed))) { throw new IOException("Invalid Input: Incorrect seed value"); }
             return true;
         }
     }
