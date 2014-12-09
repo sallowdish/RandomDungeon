@@ -61,8 +61,8 @@ namespace RandomDungeon
             {
                 try
                 {
-                    maxWidth = options.width;
-                    maxHeight = options.height;
+                    maxWidth = options.height;
+                    maxHeight = options.width;
                     numRooms = options.count;
                     seed = options.seed;
 
