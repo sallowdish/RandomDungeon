@@ -13,6 +13,7 @@ namespace RandomDungeon
         public int width;
         public int height;
         public Point diagonalEnding;
+        public Point anchorPoint;
 
         //default constructor
         //input: None
@@ -35,6 +36,7 @@ namespace RandomDungeon
             this.width = width;
             this.height = height;
             this.diagonalEnding = Point.Add(origin, new Size(width-1, height-1));
+            this.anchorPoint = new Point(origin.X + (width / 2) - 1, origin.Y + (height / 2) - 1);
         }
 
         //check if the given point is inside current room
