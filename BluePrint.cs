@@ -15,6 +15,7 @@ namespace RandomDungeon
             Vertical,
             Horizontal,
             EntryExit,
+            Path,
         };
         public Dot[,] storyboard = null;
         private List<Room> rooms = null;
@@ -23,7 +24,11 @@ namespace RandomDungeon
         private int dungeonMaxHeight = 0;
         private int numRooms = 0;
         private int seed = -1;
+
+        //accessors
         public int usedSeed { get { return seed; } }
+        public List<Room> currentRooms { get { return rooms; } }
+
 
         //default constructor
         //return a BluePrint instance with default values
@@ -103,6 +108,8 @@ namespace RandomDungeon
         //return void;
         private void generatePaths() {
             //connect each room to others
+            int drawingCounter=0;
+            if (paths == null) { paths = new List<Path>(0); }
             for (int i = 0; i < rooms.Count-1; i++)
             {
                 for (int j = i+1; j < rooms.Count; j++)
@@ -110,9 +117,9 @@ namespace RandomDungeon
                     var path = new Path(rooms[i].anchorPoint, rooms[j].anchorPoint);
                     paths.Add(path);
                     path.Draw(this);
+                    Console.WriteLine("Drawing path:"+ ++drawingCounter+" start: "+path.start.ToString()+" end: "+path.end.ToString());
                 }
             }
-            
         }
 
 
