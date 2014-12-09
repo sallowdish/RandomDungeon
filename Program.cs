@@ -9,7 +9,8 @@ namespace RandomDungeon
 {
     class Program
     {
-        static int maxWidth, maxHeight, seed;
+        static int maxWidth, maxHeight;
+        static double seed=0;
         static void Main(string[] args)
         {
             //todo validate input
@@ -22,7 +23,7 @@ namespace RandomDungeon
                 validateInput(args);
                 int.TryParse(args[0], out maxWidth);
                 int.TryParse(args[1], out maxHeight);
-                if (args.Length == 4) { int.TryParse(args[3], out seed); }
+                if (args.Length == 4) { double.TryParse(args[3], out seed); }
             }
             catch(IOException e){
                 Console.WriteLine(e.Message);
@@ -31,10 +32,14 @@ namespace RandomDungeon
             }
             try
             {
-
+                //instantiate a dundeon
+                //print the dungeon
 
             }
             catch { }
+
+            try { }
+            catch { Console.WriteLine(seed); }
         }
 
         static private bool validateInput(string[] args) {
