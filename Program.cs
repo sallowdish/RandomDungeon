@@ -4,12 +4,40 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommandLine;
+using CommandLine.Text;
 
 namespace RandomDungeon
 {
     class Program
     {
-        static int maxWidth, maxHeight;
+        class Options
+        {
+            [ValueList(typeof(List<string>), MaximumElements = 2)]
+            public IList<string> size { get; set; }
+
+            [Option('s', "seed", Required = false,
+              HelpText = "Seed to reproduce specific dungeon.")]
+            public double seed { get; set; }
+
+            [Option('c', "count", DefaultValue = 5, 
+              HelpText = "Number of rooms in the dungeon.")]
+            public int count { get; set; }
+
+            [ParserState]
+            public IParserState LastParserState { get; set; }
+
+            [HelpOption]
+            public string GetUsage()
+            {
+                var help= HelpText.AutoBuild(this,
+                  (HelpText current) => HelpText.DefaultParsingErrorsHandler(this, current));
+                help.Copyright = new CopyrightInfo("<Rui Zheng>", 2014);
+                help.AddPreOptionsLine("Usage: RandomDungeon.exe width height [-s seed] [-c num_rooms]");
+                return help;
+            }
+        }
+        static int maxWidth, maxHeight, numRooms;
         static double seed=0;
         static void Main(string[] args)
         {
@@ -19,27 +47,24 @@ namespace RandomDungeon
             //todo print seed
 
             //Validate the input and assgin to local variables
-            try {
-                validateInput(args);
-                int.TryParse(args[0], out maxWidth);
-                int.TryParse(args[1], out maxHeight);
-                if (args.Length == 4) { double.TryParse(args[3], out seed); }
-            }
-            catch(IOException e){
-                Console.WriteLine(e.Message);
-                Console.WriteLine("Usage:\tRandomDungeon maxWidth maxHeight [-s seed]");
-                Environment.Exit(-1);
-            }
-            try
+            var options = new Options();
+            if (CommandLine.Parser.Default.ParseArguments(args, options))
             {
-                //instantiate a dundeon
-                //print the dungeon
-
+                // consume Options instance properties
+                    Console.WriteLine(string.Join(" ",options.size));
+                    Console.WriteLine(numRooms = options.count);
+                    Console.WriteLine(seed=options.seed);
             }
-            catch { }
+            //try
+            //{
+            //    //instantiate a dundeon
+            //    //print the dungeon
 
-            try { }
-            catch { Console.WriteLine(seed); }
+            //}
+            //catch { }
+
+            //try { }
+            //catch { Console.WriteLine(seed); }
         }
 
         static private bool validateInput(string[] args) {
