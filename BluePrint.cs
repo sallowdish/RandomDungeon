@@ -14,8 +14,7 @@ namespace RandomDungeon
         private int width=0;
         private int height=0;
         private int numRooms=0;
-
-        private const int MAX_NUM_ROOM=5;
+        private int seed=-1;
 
         //default constructor
         //return a BluePrint instance with default values
@@ -31,19 +30,22 @@ namespace RandomDungeon
         {
             this.width = width;
             this.height = height;
-            this.numRooms = MAX_NUM_ROOM;
             this.design = new int[width, height];
         }
 
         //constructor with given initial values
         //return a BluePrint instance with given width, height values and number of rooms
-        public BluePrint(int width, int height, int numRooms): this(width,height)
+        public BluePrint(int width, int height, int numRooms,int seed): this(width,height)
         {
-            this.width = width;
-            this.height = height;
             this.numRooms = numRooms;
+            this.seed = seed;
             this.design = new int[width, height];
+            this.designDungeon();
+        }
 
+        private void designDungeon(){
+            if (seed == -1) { seed = Environment.TickCount; }
+            var generator = new Random(seed);
         }
         public void Draw(BluePrint bluePrint)
         {
