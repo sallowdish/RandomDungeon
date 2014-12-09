@@ -65,16 +65,25 @@ namespace RandomDungeon
             {
                 //randomlize x,y for origin 
                 if (rooms == null) { rooms = new List<Room>(0); }
-                int x = (int)(generator.Next() % dungeonMaxWeight * 0.75);
-                int y = (int)(generator.Next() % dungeonMaxHeight * 0.75);
+                int x = (int)(generator.Next() % dungeonMaxWeight * 0.80);
+                int y = (int)(generator.Next() % dungeonMaxHeight * 0.80);
                 int roomWidth = (int)(generator.Next() % dungeonMaxWeight * 0.2 + dungeonMaxWeight * 0.15);
                 int roomHeight = (int)(generator.Next() % dungeonMaxHeight * 0.2 + dungeonMaxHeight * 0.15);
                 var testRoom = new Room(new Point(x, y), roomWidth, roomHeight);
-                //validate if the testRoom is inside the design
+                //validate if the testRoom is inside the storyboard
                 if (isRoomInDesign(testRoom))
                 {
-                    rooms.Add(testRoom);
-                    testRoom.Draw(this);
+                    bool isTooClose = false;
+                    //test if the testRoom is too close to some exsiting room
+                    foreach (Room room in rooms) {
+                        isTooClose = Math.Sqrt((room.anchorPoint.X - testRoom.anchorPoint.X) ^ 2 + (room.anchorPoint.Y - testRoom.anchorPoint.Y) ^ 2) < Math.Sqrt(width ^ 2 + height ^ 2) * 0.1;
+                        if (isTooClose) { break; }
+                    }
+                    if (!isTooClose)
+                    {
+                        rooms.Add(testRoom);
+                        testRoom.Draw(this);
+                    }
                 }
                 
             }
