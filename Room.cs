@@ -54,7 +54,7 @@ namespace RandomDungeon
         {
             //p.Offset(origin);
             p = Point.Subtract(p, new Size(origin.X, origin.Y));
-            return (p.X == 0 && p.Y > 0 && p.Y < height) || (p.Y == 0 && p.X > 0 && p.X < width);
+            return ((p.X == 0||p.X==width-1) && p.Y > 0 && p.Y < height) || ((p.Y == 0||p.Y==height-1) && p.X > 0 && p.X < width);
         }
 
 
