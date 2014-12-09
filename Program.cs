@@ -14,14 +14,14 @@ namespace RandomDungeon
         //help class for input validating
         class Options
         {
-            [Option]
+            [Option('w', "width",
+              HelpText = "Maxium width for the dungeon.")]
             public int width { get; set; }
 
-            [Option]
+            [Option('h', "height",
+              HelpText = "Maxium width for the dungeon.")]
             public int height { get; set; }
 
-            [ValueList(typeof(List<string>), MaximumElements = 0)]
-            public IList<string> trash { get; set; }
 
             [Option('s', "seed", Required = false, DefaultValue=-1,
               HelpText = "Seed to reproduce specific dungeon.")]
@@ -59,24 +59,30 @@ namespace RandomDungeon
             var options = new Options();
             if (CommandLine.Parser.Default.ParseArguments(args, options))
             {
-                // consume Options instance properties
-                    Console.WriteLine(maxWidth=options.width);
-                    Console.WriteLine(maxHeight = options.height);
-                    Console.WriteLine(numRooms = options.count);
-                    Console.WriteLine(seed=options.seed);
-            }
-            try
-            {
-                //instantiate a dundeon
-                var blueprint = new BluePrint(maxWidth,maxHeight,numRooms,seed);
-                var dungeon = new Dungeon();
-                //print the dungeon
+                try
+                {
+                    maxWidth = options.width;
+                    maxHeight = options.height;
+                    numRooms = options.count;
+                    seed = options.seed;
 
-            }
-            catch { }
+                    //instantiate a dundeon
+                    var blueprint = new BluePrint(maxWidth, maxHeight, numRooms, seed);
+                    var dungeon = new Dungeon();
+                    dungeon.Draw(blueprint);
+                    //print the dungeon
 
-            //try { }
-            //catch { Console.WriteLine(seed); }
+                }
+                //handle local variables assignment failure
+                catch(IOException e) {
+                    Console.WriteLine(e.Message);
+                    Environment.Exit(-1);
+                }
+
+                //try { }
+                //catch { Console.WriteLine(seed); }
+            }
+            
         }
 
         static private bool validateInput(string[] args) {
