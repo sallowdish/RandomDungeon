@@ -67,8 +67,8 @@ namespace RandomDungeon
                 if (rooms == null) { rooms = new List<Room>(0); }
                 int x = (int)(generator.Next() % dungeonMaxWeight * 0.75);
                 int y = (int)(generator.Next() % dungeonMaxHeight * 0.75);
-                int roomWidth = (int)(generator.Next() % dungeonMaxWeight * 0.2 + dungeonMaxWeight * 0.1);
-                int roomHeight = (int)(generator.Next() % dungeonMaxHeight * 0.2 + dungeonMaxHeight * 0.1);
+                int roomWidth = (int)(generator.Next() % dungeonMaxWeight * 0.2 + dungeonMaxWeight * 0.15);
+                int roomHeight = (int)(generator.Next() % dungeonMaxHeight * 0.2 + dungeonMaxHeight * 0.15);
                 var testRoom = new Room(new Point(x, y), roomWidth, roomHeight);
                 //validate if the testRoom is inside the design
                 if (isRoomInDesign(testRoom))
