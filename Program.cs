@@ -13,10 +13,16 @@ namespace RandomDungeon
     {
         class Options
         {
-            [ValueList(typeof(List<string>), MaximumElements = 2)]
-            public IList<string> size { get; set; }
+            [Option]
+            public int width { get; set; }
 
-            [Option('s', "seed", Required = false,
+            [Option]
+            public int height { get; set; }
+
+            [ValueList(typeof(List<string>), MaximumElements = 0)]
+            public IList<string> trash { get; set; }
+
+            [Option('s', "seed", Required = false, DefaultValue=-1,
               HelpText = "Seed to reproduce specific dungeon.")]
             public double seed { get; set; }
 
@@ -25,15 +31,16 @@ namespace RandomDungeon
             public int count { get; set; }
 
             [ParserState]
-            public IParserState LastParserState { get; set; }
+            public IParserState lastParserState { get; set; }
 
             [HelpOption]
             public string GetUsage()
             {
-                var help= HelpText.AutoBuild(this,
-                  (HelpText current) => HelpText.DefaultParsingErrorsHandler(this, current));
+                var help = HelpText.AutoBuild(this, current => HelpText.DefaultParsingErrorsHandler(this, current));
                 help.Copyright = new CopyrightInfo("<Rui Zheng>", 2014);
-                help.AddPreOptionsLine("Usage: RandomDungeon.exe width height [-s seed] [-c num_rooms]");
+
+                help.Heading=new HeadingInfo("Usage: RandomDungeon.exe width height [-s seed] [-c num_rooms]"," ");
+
                 return help;
             }
         }
@@ -51,7 +58,8 @@ namespace RandomDungeon
             if (CommandLine.Parser.Default.ParseArguments(args, options))
             {
                 // consume Options instance properties
-                    Console.WriteLine(string.Join(" ",options.size));
+                    Console.WriteLine(maxWidth=options.width);
+                    Console.WriteLine(maxHeight = options.height);
                     Console.WriteLine(numRooms = options.count);
                     Console.WriteLine(seed=options.seed);
             }
