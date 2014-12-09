@@ -15,7 +15,9 @@ namespace RandomDungeon
             Vertical,
             Horizontal,
             EntryExit,
-            Path,
+            PathVertical,
+            PathHorizontal,
+            PathEntry,
         };
         public Dot[,] storyboard = null;
         private List<Room> rooms = null;
@@ -69,7 +71,7 @@ namespace RandomDungeon
             var generator = new Random(seed);
             generateRooms(generator);
             generatePaths();
-            //eraseInSquarePoint();
+            eraseInSquarePoint();
         }
 
         //generate a number of rooms and try to fill up the room list
@@ -117,7 +119,7 @@ namespace RandomDungeon
                     Path path = new Path(rooms[i].anchorPoint, rooms[j].anchorPoint);
                     paths.Add(path);
                     path.Draw(this);
-                    Console.WriteLine("Drawing path:"+ ++drawingCounter+" start: "+path.start.ToString()+" end: "+path.end.ToString());
+                    //Console.WriteLine("Drawing path:"+ ++drawingCounter+" start: "+path.start.ToString()+" end: "+path.end.ToString());
                 }
             }
         }

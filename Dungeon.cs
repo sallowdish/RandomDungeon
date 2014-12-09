@@ -29,6 +29,15 @@ namespace RandomDungeon
                         case BluePrint.Dot.EntryExit:
                             symbol = "*";
                             break;
+                        case BluePrint.Dot.PathVertical:
+                            symbol = "-";
+                            break;
+                        case BluePrint.Dot.PathHorizontal:
+                            symbol = "|";
+                            break;
+                        case BluePrint.Dot.PathEntry:
+                            symbol = " ";
+                            break;
                         default:
                             symbol = "x";
                             break;
