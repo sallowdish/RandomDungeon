@@ -36,13 +36,14 @@ namespace RandomDungeon
         }
 
         //constructor with given initial values
-        //return a BluePrint instance with given width and height values
+        //return a BluePrint instance with given width, height values and number of rooms
         public BluePrint(int width, int height, int numRooms): this(width,height)
         {
             this.width = width;
             this.height = height;
-            this.numRooms = MAX_NUM_ROOM;
+            this.numRooms = numRooms;
             this.design = new int[width, height];
+
         }
         public void Draw(BluePrint bluePrint)
         {
