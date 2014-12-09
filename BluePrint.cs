@@ -55,12 +55,21 @@ namespace RandomDungeon
             this.designDungeon();
         }
 
+        //fill up the storyboard according to given arguments
+        //return void;
         private void designDungeon()
         {
             //if no seed is given, using current time as seed
             if (seed == -1) { seed = Environment.TickCount; }
             var generator = new Random(seed);
+            generateRooms(generator);
+            generatePaths();
+            eraseInSquarePoint();
+        }
 
+        //generate a number of rooms and try to fill up the room list
+        //return void;
+        private void generateRooms(Random generator) {
             //generate the rooms until rooms list contains enought rooms
             while (rooms == null || rooms.Count < numRooms)
             {
@@ -76,7 +85,8 @@ namespace RandomDungeon
                 {
                     bool isTooClose = false;
                     //test if the testRoom is too close to some exsiting room
-                    foreach (Room room in rooms) {
+                    foreach (Room room in rooms)
+                    {
                         isTooClose = Math.Sqrt((room.anchorPoint.X - testRoom.anchorPoint.X) ^ 2 + (room.anchorPoint.Y - testRoom.anchorPoint.Y) ^ 2) < Math.Sqrt(width ^ 2 + height ^ 2) * 0.1;
                         if (isTooClose) { break; }
                     }
@@ -86,10 +96,25 @@ namespace RandomDungeon
                         testRoom.Draw(this);
                     }
                 }
-                
             }
-            eraseInSquarePoint();
         }
+
+        //generate a number of rooms according to current room list
+        //return void;
+        private void generatePaths() {
+            //connect each room to others
+            for (int i = 0; i < rooms.Count-1; i++)
+            {
+                for (int j = i+1; j < rooms.Count; j++)
+                {
+                    var path = new Path(rooms[i].anchorPoint, rooms[j].anchorPoint);
+                    paths.Add(path);
+                    path.Draw(this);
+                }
+            }
+            
+        }
+
 
         //check if given room is within the design
         //return true if the room is entirely inside the desgin, false otherwise
