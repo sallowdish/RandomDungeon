@@ -16,17 +16,18 @@ namespace RandomDungeon
             Horizontal,
             EntryExit,
         };
-        public Dot[,] design=null;
-        private List<Room> rooms=null;
-        private List<Path> paths=null;
-        private int dungeonMaxWeight=0;
-        private int dungeonMaxHeight=0;
-        private int numRooms=0;
-        private int seed=-1;
+        public Dot[,] storyboard = null;
+        private List<Room> rooms = null;
+        private List<Path> paths = null;
+        private int dungeonMaxWeight = 0;
+        private int dungeonMaxHeight = 0;
+        private int numRooms = 0;
+        private int seed = -1;
 
         //default constructor
         //return a BluePrint instance with default values
-        public BluePrint():base()
+        public BluePrint()
+            : base()
         {
 
         }
@@ -34,43 +35,50 @@ namespace RandomDungeon
         //constructor with given initial values
         //return a BluePrint instance with given width and height values
         public BluePrint(int width, int height)
-            : base(new Point(0,0),width,height)
+            : base(new Point(0, 0), width, height)
         {
             this.dungeonMaxWeight = width;
             this.dungeonMaxHeight = height;
-            this.design = new Dot[width, height];
+            this.storyboard = new Dot[width, height];
         }
 
         //constructor with given initial values
         //return a BluePrint instance with given width, height values and number of rooms
-        public BluePrint(int width, int height, int numRooms,int seed): this(width,height)
+        public BluePrint(int width, int height, int numRooms, int seed)
+            : this(width, height)
         {
             this.numRooms = numRooms;
             this.seed = seed;
-            this.design = new Dot[width, height];
+            this.storyboard = new Dot[width, height];
             //Draw(this);
             this.designDungeon();
         }
 
-        private void designDungeon(){
+        private void designDungeon()
+        {
             //if no seed is given, using current time as seed
             if (seed == -1) { seed = Environment.TickCount; }
             var generator = new Random(seed);
 
             //generate the rooms until rooms list contains enought rooms
-            while(rooms==null || rooms.Count<numRooms){
+            while (rooms == null || rooms.Count < numRooms)
+            {
                 //randomlize x,y for origin 
-                if (rooms == null) { rooms=new List<Room>(0);}
-                int x = (int)(generator.Next() % dungeonMaxWeight*0.75);
+                if (rooms == null) { rooms = new List<Room>(0); }
+                int x = (int)(generator.Next() % dungeonMaxWeight * 0.75);
                 int y = (int)(generator.Next() % dungeonMaxHeight * 0.75);
-                int roomWidth = (int)(generator.Next() % dungeonMaxWeight * 0.5+dungeonMaxWeight*0.1);
-                int roomHeight = (int)(generator.Next() % dungeonMaxHeight * 0.5+dungeonMaxHeight*0.1);
-                var testRoom = new Room(new Point(x,y), roomWidth, roomHeight);
-                if (isRoomInDesign(testRoom)) { 
+                int roomWidth = (int)(generator.Next() % dungeonMaxWeight * 0.2 + dungeonMaxWeight * 0.1);
+                int roomHeight = (int)(generator.Next() % dungeonMaxHeight * 0.2 + dungeonMaxHeight * 0.1);
+                var testRoom = new Room(new Point(x, y), roomWidth, roomHeight);
+                //validate if the testRoom is inside the design
+                if (isRoomInDesign(testRoom))
+                {
                     rooms.Add(testRoom);
                     testRoom.Draw(this);
                 }
+                
             }
+            eraseInSquarePoint();
         }
 
         //check if given room is within the design
@@ -78,6 +86,24 @@ namespace RandomDungeon
         private bool isRoomInDesign(Room r)
         {
             return isPointInRoom(r.origin) && isPointInRoom(r.diagonalEnding);
+        }
+
+        private void eraseInSquarePoint()
+        {
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    Point p = new Point(x, y);
+                    foreach (Room room in rooms) {
+                        if (room.isPointInRoom(p))
+                        {
+                            storyboard[x, y] = Dot.Void;
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 }

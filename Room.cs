@@ -50,9 +50,10 @@ namespace RandomDungeon
 
         //check if the given point is inside current room
         //return: true if Point is inside the room, false otherwise
-        protected bool isPointInRoom(Point p) {
-            p.Offset(origin);
-            return 0 < p.X && p.X < width && p.Y > 0 && p.Y < height;
+        public bool isPointInRoom(Point p) {
+            //p.Offset(origin);
+            p = Point.Subtract(p, new Size(origin.X, origin.Y));
+            return 0 < p.X && p.X < width-1 && p.Y > 0 && p.Y < height-1;
         }
 
         //draw current room into given blueprint
@@ -69,22 +70,22 @@ namespace RandomDungeon
             Point D = diagonalEnding;
             //draw line AB
             for(int x = A.X; x < B.X+1; x++){
-                bluePrint.design[x,A.Y] = BluePrint.Dot.Horizontal;
+                bluePrint.storyboard[x,A.Y] = BluePrint.Dot.Horizontal;
             }
             //draw line CD
             for (int x = C.X; x < D.X+1; x++)
             {
-                bluePrint.design[x,C.Y] = BluePrint.Dot.Horizontal;
+                bluePrint.storyboard[x,C.Y] = BluePrint.Dot.Horizontal;
             }
             //draw line AC
             for (int y = A.Y; y < C.Y+1; y++)
             {
-                bluePrint.design[A.X, y] = BluePrint.Dot.Vertical;
+                bluePrint.storyboard[A.X, y] = BluePrint.Dot.Vertical;
             }
             //draw line BD
             for (int y = B.Y; y < D.Y+1; y++)
             {
-                bluePrint.design[B.X, y] = BluePrint.Dot.Vertical;
+                bluePrint.storyboard[B.X, y] = BluePrint.Dot.Vertical;
             }
         }
     }

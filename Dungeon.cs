@@ -15,7 +15,7 @@ namespace RandomDungeon
                 for (int y = 0; y < bluePrint.height; y++)
                 {
                     string symbol = "";
-                    switch (bluePrint.design[x, y])
+                    switch (bluePrint.storyboard[x, y])
                     {
                         case BluePrint.Dot.Void:
                             symbol = " ";
