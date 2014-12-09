@@ -25,17 +25,6 @@ namespace RandomDungeon
             diagonalEnding = new Point(0, 0);
         }
 
-        //constructor with width and height given
-        //input: int width, int height
-        //return: a Room at (0,0) with given width and height
-        public Room(int width, int height)
-            : this()
-        {
-            this.width = width;
-            this.height = height;
-            this.diagonalEnding = Point.Add(origin, new Size(width, height));
-        }
-
         //constructor with origin, width and height given
         //input: Point origin, int width, int height
         //return: a Room at given Origin with given width and height
@@ -55,6 +44,16 @@ namespace RandomDungeon
             p = Point.Subtract(p, new Size(origin.X, origin.Y));
             return 0 < p.X && p.X < width-1 && p.Y > 0 && p.Y < height-1;
         }
+
+        //check if the given point is on the edge of current room
+        //return: true if Point is  on the edge of the room, false otherwise
+        public bool isPointOnRoom(Point p)
+        {
+            //p.Offset(origin);
+            p = Point.Subtract(p, new Size(origin.X, origin.Y));
+            return p.X==0||p.Y == 0 ;
+        }
+
 
         //draw current room into given blueprint
         // A--------B
