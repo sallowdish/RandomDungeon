@@ -62,7 +62,7 @@ namespace RandomDungeon
             //          B
             if (isVerticalFirst == 0)
             {
-                Console.WriteLine("Vertical first");
+                //Console.WriteLine("Vertical first");
                 //locate the point M(bigger X, smaller Y)
                 Point M = new Point(end.X, start.Y);
                 //draw line BM
@@ -73,7 +73,7 @@ namespace RandomDungeon
                 //A is on the right of M
                 if (M.X < start.X)
                 {
-                    for (int x = M.X; x < start.X; x++)
+                    for (int x = M.X+1; x < start.X; x++)
                     {
                         pathTrailHorizontal.Add(new Point(x, M.Y));
                     }
@@ -81,7 +81,7 @@ namespace RandomDungeon
                 //A is on the left of M
                 else
                 {
-                    for (int x = start.X; x < M.X; x++)
+                    for (int x = start.X-1; x < M.X; x++)
                     {
                         pathTrailHorizontal.Add(new Point(x, M.Y));
                     }
@@ -127,35 +127,78 @@ namespace RandomDungeon
             {
 
                 //Debug
-                bluePrint.storyboard[p.X, p.Y] = BluePrint.Dot.Path;
+                //bluePrint.storyboard[p.X, p.Y] = BluePrint.Dot.Path;
 
-                //bool isInsideRoom = false,isOnRoom=false;
-                //foreach (Room r in bluePrint.currentRooms)
-                //{
-                //    if(r.isPointInRoom(p)){
-                //        isInsideRoom=true;
-                //        break;
-                //    }
-                //    if (r.isPointOnRoom(p))
-                //    {
-                //        isOnRoom = true;
-                //        break;
-                //    }
-                //}
-                ////
-                //if (!(isInsideRoom || isOnRoom)) {
-                //    bluePrint.storyboard[p.X, p.Y] = BluePrint.Dot.Path;
-                //}
-                //else if (isOnRoom)
-                //{
-                //    bluePrint.storyboard[p.X, p.Y] = BluePrint.Dot.EntryExit;
-                //}
-                //else {
-                
-                //}
+                bool isInsideRoom = false, isOnRoom = false;
+                foreach (Room r in bluePrint.currentRooms)
+                {
+                    if (r.isPointInRoom(p))
+                    {
+                        isInsideRoom = true;
+                        break;
+                    }
+                    if (r.isPointOnRoom(p))
+                    {
+                        isOnRoom = true;
+                        break;
+                    }
+                }
+                //
+                if (!isInsideRoom && !isOnRoom)
+                {
+                    //bluePrint.storyboard[p.X, p.Y] = BluePrint.Dot.PathVertical;
+                    bluePrint.storyboard[p.X+1, p.Y] = BluePrint.Dot.PathVertical;
+                    bluePrint.storyboard[p.X, p.Y + 1] = BluePrint.Dot.PathVertical;
+                    bluePrint.storyboard[p.X + 1, p.Y + 1] = BluePrint.Dot.PathVertical;
+                }
+                else if (isOnRoom)
+                {
+
+                    bluePrint.storyboard[p.X, p.Y] = BluePrint.Dot.PathEntry;
+                    if (bluePrint.storyboard[p.X + 1, p.Y] != BluePrint.Dot.Horizontal && bluePrint.storyboard[p.X + 1, p.Y] != BluePrint.Dot.Vertical)
+                    { bluePrint.storyboard[p.X + 1, p.Y] = BluePrint.Dot.PathEntry; }
+                }
+                else
+                {
+
+                }
             }
             foreach (Point p in pathTrailHorizontal) {
-                bluePrint.storyboard[p.X, p.Y] = BluePrint.Dot.Path;
+                //bluePrint.storyboard[p.X, p.Y] = BluePrint.Dot.Path;
+                bool isInsideRoom = false, isOnRoom = false;
+                foreach (Room r in bluePrint.currentRooms)
+                {
+                    if (r.isPointInRoom(p))
+                    {
+                        isInsideRoom = true;
+                        break;
+                    }
+                    if (r.isPointOnRoom(p))
+                    {
+                        isOnRoom = true;
+                        break;
+                    }
+                }
+                //
+                if (!(isInsideRoom || isOnRoom))
+                {
+                    bluePrint.storyboard[p.X, p.Y] = BluePrint.Dot.PathHorizontal;
+
+                    bluePrint.storyboard[p.X, p.Y+2] = BluePrint.Dot.PathHorizontal;
+                }
+                else if (isOnRoom)
+                {
+                    if (bluePrint.storyboard[p.X, p.Y] != BluePrint.Dot.Horizontal && bluePrint.storyboard[p.X, p.Y] != BluePrint.Dot.Vertical)
+                    {
+                        bluePrint.storyboard[p.X, p.Y] = BluePrint.Dot.PathEntry;
+                    }
+                    Point p2 = new Point(p.X, p.Y + 1);
+                        bluePrint.storyboard[p2.X, p2.Y] = BluePrint.Dot.PathEntry;
+                }
+                else
+                {
+
+                }
             }
         }
     }
