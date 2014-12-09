@@ -66,21 +66,20 @@ namespace RandomDungeon
                     numRooms = options.count;
                     seed = options.seed;
 
-                    //instantiate a dundeon
+                    //instantiate a dungeon
                     var blueprint = new BluePrint(maxWidth, maxHeight, numRooms, seed);
                     var dungeon = new Dungeon();
-                    dungeon.Draw(blueprint);
-                    //print the dungeon
 
+                    //print the dungeon
+                    dungeon.Draw(blueprint);
+
+                    Console.WriteLine("Seed used: "+blueprint.usedSeed);
                 }
                 //handle local variables assignment failure
                 catch(IOException e) {
                     Console.WriteLine(e.Message);
                     Environment.Exit(-1);
                 }
-
-                //try { }
-                //catch { Console.WriteLine(seed); }
             }
             
         }

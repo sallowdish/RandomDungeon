@@ -23,6 +23,7 @@ namespace RandomDungeon
         private int dungeonMaxHeight = 0;
         private int numRooms = 0;
         private int seed = -1;
+        public int usedSeed { get { return seed; } }
 
         //default constructor
         //return a BluePrint instance with default values
